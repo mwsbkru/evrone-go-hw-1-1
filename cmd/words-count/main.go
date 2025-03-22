@@ -25,6 +25,7 @@ func main() {
 
 	if fileName == "" {
 		fmt.Println("Не указано имя файла для открытия")
+		return
 	}
 
 	wordsUsageRaw, err := readWordsFromFile(fileName)
