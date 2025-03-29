@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"flag"
 	"fmt"
+	"log/slog"
 	"os"
 	"regexp"
 	"sort"
@@ -30,7 +31,7 @@ func main() {
 
 	wordsUsageRaw, err := readWordsFromFile(fileName)
 	if err != nil {
-		fmt.Println("Ошибка при открытии файла: ", err)
+		slog.Error("Ошибка при открытии файла", slog.String("ошибка", err.Error()))
 		return
 	}
 
@@ -50,7 +51,7 @@ func readWordsFromFile(fileName string) (map[string]int, error) {
 
 	file, err := os.Open(fileName)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("не получилось открыть файл: %s. Ошибка: %w", fileName, err)
 	}
 	defer file.Close()
 
@@ -67,7 +68,7 @@ func readWordsFromFile(fileName string) (map[string]int, error) {
 	}
 
 	if err := scanner.Err(); err != nil {
-		return nil, err
+		return nil, fmt.Errorf("ошибка чтения файла: %w", err)
 	}
 
 	return wordsUsage, nil
